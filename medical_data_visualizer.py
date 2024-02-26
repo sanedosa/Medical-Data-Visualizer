@@ -38,10 +38,12 @@ def draw_cat_plot():
     # df_cat.loc[(df_cat.variable=="smoke")&(df_cat.value==0),"total"]=df_cat[(df_cat.variable=="smoke")&(df_cat.value==0)].index.size
    
    
-    df_cat = df.melt(id_vars="cardio",value_vars=["active", "alco", "cholesterol", "gluc", "overweight", "smoke"])
+    # df_cat = df.melt(id_vars="cardio",value_vars=["active", "alco", "cholesterol", "gluc", "overweight", "smoke"])
     df_cat = df.melt(id_vars="cardio",value_vars=["active", "alco", "cholesterol", "gluc", "overweight", "smoke"]).value_counts().reset_index()
     df_cat.rename(columns = {0:'total'}, inplace = True) 
-    
+    df_cat=df_cat.sort_values(by=["variable"])
+
+
     np.float = float    
     np.int = int   #module 'numpy' has no attribute 'int'
     np.object = object    #module 'numpy' has no attribute 'object'
@@ -52,7 +54,7 @@ def draw_cat_plot():
 
 
     # Get the figure for the output
-    fig = sns.catplot(x="variable", y="total", col="cardio", hue="value",data=df_cat, kind="bar")
+    fig = sns.catplot(x="variable", y="total", col="cardio", hue="value",data=df_cat, kind="bar").fig
 
 
     # Do not modify the next two lines
