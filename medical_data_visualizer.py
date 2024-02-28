@@ -65,21 +65,31 @@ def draw_cat_plot():
 # Draw Heat Map
 def draw_heat_map():
     # Clean the data
-    df_heat = None
+    # df_heat = df[df["ap_lo"]<=df["ap_hi"]]
+    # df_heat = df_heat.drop(df_heat[df_heat['height'] < df_heat['height'].quantile(0.025)].index)
+    # df_heat = df_heat.drop(df_heat[df_heat['height'] > df_heat['height'].quantile(0.975)].index)
+    # df_heat = df_heat.drop(df_heat[df_heat['weight'] < df_heat['weight'].quantile(0.025)].index)
+    # df_heat = df_heat.drop(df_heat[df_heat['weight'] > df_heat['weight'].quantile(0.975)].index)
 
+    df_heat = df[(df["height"]>=df["height"].quantile(0.025))
+                &(df["height"]<=df["height"].quantile(0.975))
+                &(df["weight"]>=df["weight"].quantile(0.025))
+                &(df["weight"]<=df["weight"].quantile(0.975))
+                &(df["ap_lo"]<=df["ap_hi"])]
+    
     # Calculate the correlation matrix
-    corr = None
+    corr=df_heat.corr()
 
     # Generate a mask for the upper triangle
-    mask = None
+    mask=np.triu(np.ones_like(corr))
 
 
 
     # Set up the matplotlib figure
-    fig, ax = None
+    fig, ax = plt.subplots(figsize=(9, 9))
 
     # Draw the heatmap with 'sns.heatmap()'
-
+    sns.heatmap(corr, annot=True, cmap="magma",mask=mask, fmt=".1f")
 
 
     # Do not modify the next two lines
